@@ -1,0 +1,31 @@
+@mixin dimension($width, $height: $width) {
+  width: $width;
+  height: $height;
+}
+
+.avatarContainer {
+  border-radius: 50%;
+
+  &.large {
+    @include dimension(140px);
+  }
+  &.meduim {
+    @include dimension(40px);
+  }
+  &.small {
+    @include dimension(24px);
+  }
+  display: inline-block;
+  margin-right: 1rem;
+  // margin-right: $avatarMargin;
+
+  .avatar {
+    width: 100%;
+    height: 100%;
+    vertical-align: middle;
+    border-radius: 50%;
+
+    // @include dimension($avatarSize, $avatarSize);
+    // background-color: $avatarBgColor;
+  }
+}

@@ -1,0 +1,13 @@
+.loader {
+  min-height: 20px;
+  cursor: wait;
+  background-color: #ebebeb;
+  margin: 10px 0;
+  animation: placeholder-glow 2s ease-in-out infinite;
+
+  @keyframes placeholder-glow {
+    50% {
+      opacity: 0.5;
+    }
+  }
+}

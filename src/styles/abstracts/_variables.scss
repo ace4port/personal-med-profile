@@ -1,0 +1,63 @@
+// -----------------------------------------------------------------------------
+// This file contains all application-wide Sass variables.
+// -----------------------------------------------------------------------------
+
+$heading-font-stack: 'Poppins', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif !default;
+$text-font-stack: 'Nunito', 'Inter', 'Open Sans', 'Arial', sans-serif !default;
+
+$heading-color: #58468c !default;
+$text-color: #716c80 !default;
+$text-secondary: #ee2852 !default;
+
+$link-color: #58468c;
+$link-active: #ff8a73;
+
+$primary: #363865;
+$secondary: #ee2852;
+$tertiary: #716c80;
+$danger: #ec2323;
+$warning: #f1af34;
+$info: #712aa0;
+
+$light: #ffffff;
+$dark: #000000;
+$gray: #929292;
+
+$success: #31da88;
+$success: #2ecc71;
+
+// $gray-light:
+// $gray-dark:
+
+$brand-color: #e50050 !default;
+
+/// Light grey
+/// @type Color
+$light-grey: rgb(237, 237, 237) !default;
+
+/// Medium grey
+/// @type Color
+$mid-grey: rgb(153, 153, 153) !default;
+
+/// Dark grey
+/// @type Color
+$dark-grey: rgb(68, 68, 68) !default;
+
+/// Container's maximum width
+/// @type Length
+$max-width: 1180px !default;
+
+/// Breakpoints map
+/// @prop {String} keys - Keys are identifiers mapped to a given length
+/// @prop {Map} values - Values are actual breakpoints expressed in pixels
+$breakpoints: (
+  'small': 320px,
+  'medium': 768px,
+  'large': 1024px,
+) !default;
+
+/// Relative or absolute URL where all assets are served from
+/// @type String
+/// @example scss - When using a CDN
+///   $base-url: 'http://cdn.example.com/assets/';
+$base-url: '/assets/' !default;

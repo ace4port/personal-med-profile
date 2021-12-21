@@ -1,0 +1,187 @@
+%button {
+  max-height: 42px;
+  transition: all 50ms linear;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  text-align: center;
+  text-transform: capitalize;
+
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+
+  font-size: 1.1rem;
+  margin: 5px;
+  padding: 15px 25px;
+  color: $light;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.btn {
+  @extend %button;
+
+  &__round {
+    border-radius: 2rem;
+  }
+
+  &--primary {
+    background-color: $primary;
+  }
+  &--secondary {
+    background-color: $secondary;
+  }
+  &--outlined {
+    background-color: transparent;
+    border: 2px solid $primary;
+    color: $primary;
+  }
+  &--danger {
+    background-color: $danger;
+  }
+  &--info {
+    background-color: $info;
+  }
+  &--warning {
+    background-color: $warning;
+  }
+  &--disabled {
+    cursor: not-allowed;
+    background-color: $gray;
+
+    &:hover {
+      transform: none;
+    }
+  }
+  &--plain {
+    all: unset;
+    @extend a;
+    cursor: pointer;
+    &:hover {
+      transform: none;
+    }
+    &:focus {
+      outline: 2px solid $primary;
+    }
+  }
+}
+
+.button {
+  transition: border-radius linear 0.05s, width linear 0.05s;
+
+  &.loading {
+    padding: 0px;
+    cursor: wait;
+    width: 60px;
+    min-height: 60px;
+    height: 60px;
+    background-color: $warning;
+    border-radius: 50%;
+  }
+  &.success {
+    @extend .loading;
+    cursor: pointer;
+    background-color: $success;
+  }
+  &.error {
+    @extend .loading;
+    cursor: pointer;
+    background-color: $danger;
+    font-size: 2rem;
+    font-weight: 800;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+  }
+  90% {
+    transform: translate(-50%, -50%) rotate(1080deg) scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: translate(-50%, -50%) rotate(0deg) scale(1);
+  }
+
+  98% {
+    -webkit-transform: translate(-50%, -50%) rotate(1080deg) scale(1);
+  }
+
+  100% {
+    -webkit-transform: translate(-50%, -50%) rotate(1080deg) scale(0);
+  }
+}
+
+@keyframes success {
+  from {
+    transform: translate(-50%, -50%) rotate(0) scale(0);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(-45deg) scale(1);
+  }
+}
+
+@-webkit-keyframes success {
+  from {
+    -webkit-transform: translate(-50%, -50%) rotate(0) scale(0);
+  }
+  to {
+    -webkit-transform: translate(-50%, -50%) rotate(-45deg) scale(1);
+  }
+}
+
+@keyframes error {
+  from {
+    transform: translate(-50%, -50%) scale(0);
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    background-color: #f44336;
+  }
+}
+
+@-webkit-keyframes error {
+  from {
+    -webkit-transform: translate(-50%, -50%) scale(0);
+  }
+  to {
+    -webkit-transform: translate(-50%, -50%) scale(1);
+    background-color: #f44336;
+  }
+}
+
+@keyframes vibrate {
+  0%,
+  30%,
+  60%,
+  85%,
+  100% {
+    left: 0;
+    background-color: #f44336;
+  }
+  10%,
+  40%,
+  90%,
+  70% {
+    left: -2px;
+    background-color: #f44336;
+  }
+  20%,
+  50%,
+  80%,
+  95% {
+    left: 2px;
+    background-color: #f44336;
+  }
+}

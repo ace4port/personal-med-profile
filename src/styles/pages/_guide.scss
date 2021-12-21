@@ -1,0 +1,12 @@
+.container {
+  gap: 2rem;
+  display: flex;
+  align-items: center;
+
+  div:first-child {
+    min-width: 100px;
+  }
+  div:last-child {
+    padding-left: 3rem;
+  }
+}

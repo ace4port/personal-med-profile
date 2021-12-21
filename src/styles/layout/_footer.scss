@@ -1,0 +1,27 @@
+.footer {
+  background-color: darken($primary, 10%);
+  &__main {
+    padding: 2rem 1rem;
+    display: flex;
+    justify-content: space-around;
+    gap: 2rem;
+
+    h2 {
+      color: $light;
+    }
+    svg {
+      margin-right: 0.4rem;
+    }
+  }
+  &__bottom {
+    background-color: darken($primary, 20%);
+    text-align: center;
+    padding: 1rem 0;
+  }
+}
+
+.footIntro,
+.footContact,
+.footSupport {
+  flex: 1;
+}
