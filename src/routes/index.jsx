@@ -8,6 +8,7 @@ import DashboardLayout from 'layout/Dashboard/Layout'
 import { publicRoutes } from './pubRoutes'
 import { privateRoutes } from './privateRoutes'
 import Dashboard from 'pages/Dashboard'
+import Error from 'pages/Error'
 
 const RoutesList = () => {
   return (
@@ -30,10 +31,12 @@ const RoutesList = () => {
           }
         >
           <Route index element={<Dashboard />} />
-          {privateRoutes.map((route) => (
-            <Route key={route.name} path={route.path} element={route.component} />
-          ))}
+          {privateRoutes.map((route) => {
+            const suspenseWrap = <Suspense fallback={<div>Loading ....</div>}>{route.component}</Suspense>
+            return <Route key={route.name} path={route.path} element={suspenseWrap} />
+          })}
         </Route>
+        <Route path="*" element={<Error />} />
       </Routes>
     </BrowserRouter>
   )

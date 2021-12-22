@@ -1,50 +1,74 @@
 import React, { useEffect, useState } from 'react'
+import styles from './appointment.module.scss'
+import { useDispatch, useSelector } from 'react-redux'
 
 import FormModal from 'components/ui/Modals/FormModal'
-import { RoundButton } from 'components/ui/Buttons'
-import { AnimatedButton } from 'components/ui/Buttons'
+import { RoundButton, AnimatedButton } from 'components/ui/Buttons'
 import { fireToast } from 'components/ui/Toast'
+import { approveAppointment, createAppointment, fetchAppointments } from './appointmentSlice'
+import { BsPlusLg } from 'react-icons/bs'
+import SimpleModal from 'components/ui/Modals/SimpleModal'
+import { fetchDoctors } from 'features/doctors/doctorSlice'
+import { fetchDepartments } from 'features/department/departmentSlice'
 
 const Appointment = () => {
+  const dispatch = useDispatch()
+
+  useEffect(() => dispatch(fetchAppointments()), [dispatch])
+  useEffect(() => dispatch(fetchDoctors()), [dispatch])
+  useEffect(() => dispatch(fetchDepartments()), [dispatch])
+
+  const appList = useSelector((state) => state.appointment.appointments)
+
+  const doctors = useSelector((state) => state.doctors.doctorList)
+  const departments = useSelector((state) => state.department.departmentList)
+
   const [modal, setmodal] = useState(false)
   return (
-    <div>
-      <div> ---------------- This is appointments page -----------------</div>
-
-      <RoundButton handleClick={() => setmodal(true)}>Make an appointment</RoundButton>
-      <FormModal isActive={modal} closeModal={() => setmodal(false)} title="Make a new appointment">
-        <MakeAppointment isActive={modal} handleClose={() => setmodal(false)} />
-      </FormModal>
+    <div className={styles.appointment}>
+      <div className={styles.head}>
+        <h2>Appointments</h2>
+        <RoundButton handleClick={() => setmodal(true)}>
+          <BsPlusLg />
+          &nbsp; Make an appointment
+        </RoundButton>
+        <FormModal isActive={modal} closeModal={() => setmodal(false)} title="Make a new appointment">
+          <MakeAppointment
+            isActive={modal}
+            handleClose={() => setmodal(false)}
+            doctors={doctors}
+            departments={departments}
+          />
+        </FormModal>
+      </div>
 
       <h4>Appointments on calendar -- op idea .....</h4>
-      <h5>Past appointments</h5>
-      <li>Appointment 1</li>
-      <li>Appointment 2</li>
-      <li>Appointment 1</li>
-      <li>Appointment 4</li>
-      <h6>Click on appointment for appointments details</h6>
+
+      <div className={styles.past}>
+        <h5>Appointments</h5>
+        {appList.map((app) => (
+          <OneAppointment
+            id={app.id}
+            key={app.id}
+            doctor={doctors.find((doc) => doc.id === app?.doctor).full_name}
+            department={departments.find((dep) => dep.id === app.department).d_name}
+            date={app.schedule_date_time}
+            description={app.description}
+            approved={app.is_approve}
+          />
+        ))}
+        {appList.length === 0 && <div>No appointments found</div>}
+        <h6>Click on appointment for appointments details</h6>
+      </div>
     </div>
   )
 }
 
 export default Appointment
 
-const departments = [
-  'Anesthesiology',
-  'Orthopedic',
-  'Dermatology',
-  'Pathalogy',
-  'Pediatrics',
-  'Radiology',
-  'ENT',
-  'Dentistry',
-  'Psychiatry',
-  'Physiotherapy',
-  'Pharmacy',
-]
-const doctors = ['Dr. A', 'Dr. B', 'Dr. C', 'Dr. D', 'Dr. E']
-const MakeAppointment = ({ isActive, handleClose }) => {
-  const [formData, setFormdata] = useState({ date: '', desc: '', doctor: '', department: '' })
+const MakeAppointment = ({ isActive, handleClose, doctors, departments }) => {
+  const dispatch = useDispatch()
+  const [formData, setFormdata] = useState({ schedule_date_time: '', description: '', doctor: 1, department: 1 })
 
   const [status, setStatus] = useState('idle')
   useEffect(() => setStatus('idle'), [isActive])
@@ -54,8 +78,11 @@ const MakeAppointment = ({ isActive, handleClose }) => {
   }
 
   const handleSubmit = (e) => {
-    setStatus('loading')
     e.preventDefault()
+    setStatus('loading')
+
+    dispatch(createAppointment(formData))
+
     setTimeout(() => {
       setStatus('success')
       fireToast('success', 'Appointment created')
@@ -72,8 +99,8 @@ const MakeAppointment = ({ isActive, handleClose }) => {
         Select a department
         <select name="department" value={formData.department} onChange={handleChange}>
           {departments.map((department) => (
-            <option key={department} value={department}>
-              Department of {department}
+            <option key={department.id} value={department.id}>
+              Department of {department?.d_name}
             </option>
           ))}
         </select>
@@ -83,19 +110,19 @@ const MakeAppointment = ({ isActive, handleClose }) => {
       <label>Select a doctor</label>
       <select name="doctor" value={formData.doctor} onChange={handleChange}>
         {doctors.map((doctor) => (
-          <option key={doctor} value={doctor}>
-            {doctor}
+          <option key={doctor.id} value={doctor.id}>
+            {doctor?.full_name}
           </option>
         ))}
       </select>
       <br />
 
       <label>Enter date and time</label>
-      <input type="datetime-local" name="date" value={formData.date} onChange={handleChange} />
+      <input type="datetime-local" name="schedule_date_time" value={formData.date} onChange={handleChange} />
       <br />
 
       <label>Describe your illness</label>
-      <input type="text" name="desc" value={formData.desc} onChange={handleChange} />
+      <input type="text" name="description" value={formData.desc} onChange={handleChange} />
       <br />
 
       <AnimatedButton type="submit" status={status}>
@@ -105,5 +132,56 @@ const MakeAppointment = ({ isActive, handleClose }) => {
         Cancel
       </RoundButton>
     </form>
+  )
+}
+
+const OneAppointment = ({ id, date, doctor, department, description, approved }) => {
+  const [modal, setModal] = useState(false)
+  const openModal = () => setModal(true)
+  const closeModal = () => setModal(false)
+
+  return (
+    <>
+      <div className={styles.appoint} onClick={openModal}>
+        <li>
+          Appointment {id} {doctor}
+          <strong>{new Date(date).toDateString()}</strong>
+        </li>
+        <p> {approved ? 'Approved' : 'Approval Pending'}</p>
+      </div>
+      <SimpleModal isActive={modal} closeModal={closeModal}>
+        <ModalContents
+          date={date}
+          doctor={doctor}
+          department={department}
+          description={description}
+          id={id}
+          approved={approved}
+        />
+      </SimpleModal>
+    </>
+  )
+}
+
+const ModalContents = ({ id, doctor, department, is_approve, date, description }) => {
+  return (
+    <div>
+      <h4>Appointment {id} details</h4>
+      <p>
+        <strong>Department:</strong> Department of {department}
+      </p>
+      <p>
+        <strong>Doctor:</strong> {doctor}
+      </p>
+      <p>
+        <strong>Approved:</strong> {is_approve ? 'Yes' : 'No'}
+      </p>
+      <p>
+        <strong>Date:</strong> {date}
+      </p>
+      <p>
+        <strong>Description:</strong> {description}
+      </p>
+    </div>
   )
 }

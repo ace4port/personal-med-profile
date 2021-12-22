@@ -1,14 +1,18 @@
+import { fetchDepartments } from 'api'
 import { AnimatedButton } from 'components/ui/Buttons'
 import { fireToast } from 'components/ui/Toast'
+import useFetch from 'hooks/useFetch'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { register } from './authSlice'
+import { doctor_register } from './authSlice'
 import { Input } from './LogIn'
 
 const Register = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
+  const [data, loading, error] = useFetch(fetchDepartments)
 
   const status = useSelector((state) => state.auth.status)
   const [formdata, setFormdata] = useState({
@@ -19,18 +23,19 @@ const Register = () => {
     gender: '',
     date_of_birth: '',
     blood_group: '',
+    department: '',
   })
 
   const handleChange = (e) => setFormdata({ ...formdata, [e.target.name]: e.target.value })
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    dispatch(register(formdata))
+    dispatch(doctor_register(formdata))
   }
 
   if (status === 'success') {
-    fireToast('success', 'Account created succss')
-    setTimeout(() => navigate('/login', { replace: true }), 2000)
+    fireToast('success', 'New doctor Account created')
+    setTimeout(() => navigate('/doctor/login', { replace: true }), 2000)
   }
 
   return (
@@ -65,14 +70,28 @@ const Register = () => {
             <label>Blood Group:</label>
             <Input type="text" name="blood_group" value={formdata.blood_group} onChange={handleChange} />
           </div>
+
+          <div>
+            <label>Department:</label>
+            <select name="department" value={formdata.department} onChange={handleChange}>
+              <option>Select a value</option>
+              {loading ? (
+                <h2>Loading ... </h2>
+              ) : error ? (
+                <p>Could not fetch departments. {error.message}</p>
+              ) : (
+                data.map((department) => <option value={department.id}>{department.d_name}</option>)
+              )}
+            </select>
+          </div>
         </fieldset>
 
         <AnimatedButton status={status} type="submit">
-          Log In
+          Register
         </AnimatedButton>
         <p>
-          Doctor Instead? Register
-          <Link to="/doctor/register"> here</Link>
+          Patient Instead? Register
+          <Link to="/register"> here</Link>
         </p>
       </form>
     </div>

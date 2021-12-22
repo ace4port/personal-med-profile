@@ -5,7 +5,8 @@ const initialState = {
   isLoggedIn: false,
   loading: false,
   status: 'idle',
-  user: null,
+  isDoctor: false,
+  user: undefined,
 }
 
 // function logInAPI({ email, password }) {
@@ -39,17 +40,33 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
+  reducers: {
+    logOut: (state) => {
+      state.isLoggedIn = false
+      state.isDoctor = false
+      state.status = 'idle'
+      state.user = null
+      localStorage.removeItem('token')
+    },
+    setUser: (state, action) => {
+      state.user = action.payload
+    },
+    logInLocal: (state) => {
+      const token = localStorage.getItem('token')
+      state.isLoggedIn = token
+    },
+  },
+
   extraReducers: (builder) => {
     builder
       .addCase(logIn.pending, (state) => {
         state.status = 'loading'
         state.loading = true
       })
-      .addCase(logIn.fulfilled, (state, action) => {
+      .addCase(logIn.fulfilled, (state) => {
         state.loading = false
         state.status = 'success'
         state.isLoggedIn = true
-        state.user = action.payload
       })
       .addCase(logIn.rejected, (state, action) => {
         state.loading = false
@@ -61,16 +78,31 @@ export const authSlice = createSlice({
         state.status = 'loading'
         state.loading = true
       })
-      .addCase(register.fulfilled, (state, action) => {
+      .addCase(register.fulfilled, (state) => {
+        state.loading = false
+        state.status = 'success'
+        state.isLoggedIn = false
+        // state.user = action.payload
+      })
+
+      .addCase(doctor_logIn.fulfilled, (state, action) => {
         state.loading = false
         state.status = 'success'
         state.isLoggedIn = true
+        state.isDoctor = true
+        state.user = action.payload
+      })
+      .addCase(doctor_register.fulfilled, (state, action) => {
+        state.loading = false
+        state.status = 'success'
+        state.isLoggedIn = false
+        state.isDoctor = true
         state.user = action.payload
       })
   },
 })
 
-export const { increment, decrement, incrementByAmount } = authSlice.actions
+export const { logInLocal, logOut, setUser } = authSlice.actions
 export const isLoggedIn = (state) => state.auth.isLoggedIn
 
 export default authSlice.reducer

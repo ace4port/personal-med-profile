@@ -1,30 +1,15 @@
 import React from 'react'
-import Error from 'pages/Error'
 
-const Blog = React.lazy(() => import('pages/Blog'))
-const UI = React.lazy(() => import('pages/Guide/UI'))
-const Counter = React.lazy(() => import('features/counter/Counter'))
+// const UI = React.lazy(() => import('pages/Guide/UI'))
 const LogIn = React.lazy(() => import('features/auth/LogIn'))
 const Register = React.lazy(() => import('features/auth/Register'))
+
+const LogInDoc = React.lazy(() => import('features/auth/LoginDoc'))
+const RegisterDoc = React.lazy(() => import('features/auth/RegisterDoc'))
 
 const Features = () => <div> ---------------- Features ----------------</div>
 
 export const publicRoutes = [
-  {
-    name: 'Guide',
-    path: 'guides',
-    component: <UI />,
-  },
-  {
-    name: 'Blog',
-    path: 'blogs',
-    component: <Blog />,
-  },
-  {
-    name: 'Counter',
-    path: 'counter',
-    component: <Counter />,
-  },
   {
     name: 'Features',
     path: 'features',
@@ -41,8 +26,13 @@ export const publicRoutes = [
     component: <Register />,
   },
   {
-    name: 'Error',
-    path: '*',
-    component: <Error />,
+    name: 'Doctor Log In',
+    path: 'doctor/login',
+    component: <LogInDoc />,
+  },
+  {
+    name: 'Doctor Register',
+    path: 'doctor/register',
+    component: <RegisterDoc />,
   },
 ]

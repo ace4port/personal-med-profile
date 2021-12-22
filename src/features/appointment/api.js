@@ -1,16 +1,24 @@
 import axios from 'axios'
-const url = 'https://phr21.herokuapp.com/api/v1'
+import { getConfig } from 'api'
+const url = 'http://phr21.herokuapp.com/api/v1/appointments'
 
-export const getConfig = () => {
-  const token = localStorage.getItem('token')
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-  }
-  return config
-}
+export const fetchAppointments = () => axios.get(`${url}`)
+export const createAppointments = (formdata) => axios.post(`${url}/`, { ...formdata }, getConfig())
+
+// Single post crud
+export const fetchOne = (id) => axios.get(`${url}/${id}/`)
+export const createPost = (newPost, config) => axios.post(`${url}/`, newPost, config)
+export const updatePost = (id, updatedPost, config) => axios.patch(`${url}/${id}/`, updatedPost, config)
+export const deletePost = (id, config) => axios.delete(`${url}/${id}/`, config)
+
+// Like and unlike post
+export const likePost = (id, config) => axios.put(`${url}/${id}/likes/`, {}, config)
+
+// Follow unfollow user
+export const follow = (id, config) => axios.put(`${url}/users/${id}/followers/`, {}, config)
+
+// c-ud restricted to admin only
+export const getCategories = () => axios.get(`${url}/categories/`)
 
 export const patient_logIn = ({ email, password }) => axios.post(`${url}/patient-accounts/login/`, { email, password })
 
@@ -19,30 +27,8 @@ export const patient_register = ({ full_name, email, password, contact_no, gende
 
 export const doctor_logIn = ({ email, password }) => axios.post(`${url}/patient-accounts/login/`, { email, password })
 
-export const doctor_register = ({
-  full_name,
-  email,
-  password,
-  contact_no,
-  gender,
-  date_of_birth,
-  blood_group,
-  department,
-}) =>
-  axios.post(`${url}/doctors/`, {
-    full_name,
-    email,
-    password,
-    contact_no,
-    gender,
-    date_of_birth,
-    blood_group,
-    department,
-  })
-
-export const fetchUser = () => axios.get(`${url}/patient-accounts/me/profile/`, getConfig())
-export const UpdateAccount = (formdata) =>
-  axios.put(`${url}/patient-accounts/me/profile/`, { ...formdata }, getConfig())
+export const doctor_register = ({ full_name, email, password, contact_no, gender, date_of_birth, blood_group }) =>
+  axios.post(`${url}/doctor/`, { full_name, email, password, contact_no, gender, date_of_birth, blood_group })
 
 /*
 export const logIn = ({ username, password }) => axios.post(`${url}/user_login/`, { username, password })

@@ -1,10 +1,4 @@
-import Appointment from 'features/appointment'
-import Services from 'features/services'
-import Prescription from 'features/prescription'
-import Reports from 'features/reports'
-import Support from 'features/support'
-import Account from 'features/account'
-import Profile from 'features/profile'
+import React from 'react'
 
 import {
   ImProfile,
@@ -15,6 +9,14 @@ import {
   MdContactSupport,
   MdManageAccounts,
 } from 'components/icons'
+
+const Profile = React.lazy(() => import('features/profile'))
+const Appointment = React.lazy(() => import('features/appointment'))
+const Prescription = React.lazy(() => import('features/prescription'))
+const Reports = React.lazy(() => import('features/reports'))
+const Support = React.lazy(() => import('features/support'))
+const Account = React.lazy(() => import('features/account'))
+const Services = React.lazy(() => import('features/services'))
 
 export const privateRoutes = [
   {

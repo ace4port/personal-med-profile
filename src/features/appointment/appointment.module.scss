@@ -1,0 +1,33 @@
+.appointment {
+  width: 100%;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  .head {
+    display: flex;
+    justify-content: space-between;
+  }
+  .past {
+    h5 {
+      margin: 0px;
+    }
+  }
+  .appoint {
+    list-style: none;
+    display: flex;
+    padding-left: 2rem;
+
+    color: rebeccapurple;
+    &:hover {
+      transform: scale(1.1);
+    }
+    cursor: pointer;
+
+    gap: 2rem;
+    align-items: center;
+    input {
+      height: 2rem;
+      width: 2rem;
+    }
+  }
+}

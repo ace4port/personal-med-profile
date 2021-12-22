@@ -6,10 +6,11 @@ import { useState, useEffect } from 'react'
  * @returns
  */
 
-export const useFetch = (getData, params) => {
+export const useFetch = (getData, params, condition = true) => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [success, setSuccess] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,16 +19,22 @@ export const useFetch = (getData, params) => {
       try {
         const result = await getData(params)
         setData(result.data)
+        setSuccess(true)
       } catch (error) {
         setError({ status: error.response.status, message: error.response.statusText })
       }
       setLoading(false)
     }
 
-    fetchData()
-  }, [getData, params])
+    if (condition) {
+      fetchData()
+    } else {
+      loading && setLoading(false)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getData, params, condition])
 
-  return [data, loading, error]
+  return [data, loading, error, success]
 }
 
 export default useFetch

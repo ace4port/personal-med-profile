@@ -18,7 +18,6 @@ function SimpleModal(props) {
               <br />
               {props.subtitle && <span className="modal-sub-title">{props.subtitle}</span>}
             </div>
-            <div className="title-right">Title Right Content</div>
           </div>
           <div className="modal-body">{props.children}</div>
         </div>
