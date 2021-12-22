@@ -5,6 +5,8 @@ const url = 'http://phr21.herokuapp.com/api/v1/appointments'
 export const fetchAppointments = () => axios.get(`${url}`)
 export const createAppointments = (formdata) => axios.post(`${url}/`, { ...formdata }, getConfig())
 
+export const approveAppointment = (id, formdata) => axios.patch(`${url}/${id}/`, { ...formdata }, getConfig())
+
 // Single post crud
 export const fetchOne = (id) => axios.get(`${url}/${id}/`)
 export const createPost = (newPost, config) => axios.post(`${url}/`, newPost, config)

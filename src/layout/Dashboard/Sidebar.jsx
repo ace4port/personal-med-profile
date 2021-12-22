@@ -7,6 +7,8 @@ import Footer from 'layout/Footer'
 import { NavLink, Outlet } from 'react-router-dom'
 import { privateRoutes } from 'routes/privateRoutes'
 import Nav from './Nav'
+import { useSelector } from 'react-redux'
+import { doctorRoutes } from 'routes/doctorRoutes'
 
 const Link = styled(NavLink)`
   display: block;
@@ -26,19 +28,28 @@ const Link = styled(NavLink)`
 `
 
 const Sidebar = ({ data, loading, error }) => {
-  const name = data?.first_name ?? 'EMT'
+  const isDoctor = useSelector((state) => state.auth.isDoctor)
+  const name = !isDoctor ? data?.first_name ?? 'EMT' : data?.name ?? 'Doctor'
+
   return (
     <>
       <div className="dashboard">
         <aside className="dashboard__aside">
           <div>
             <UserInfoCard name={name} loading={loading} />
-            {privateRoutes.map((route) => (
-              <Link key={route.name} to={route.path}>
-                {route.icon && route.icon}
-                {route.name}
-              </Link>
-            ))}
+            {!isDoctor
+              ? privateRoutes.map((route) => (
+                  <Link key={route.name} to={route.path}>
+                    {route.icon && route.icon}
+                    {route.name}
+                  </Link>
+                ))
+              : doctorRoutes.map((route) => (
+                  <Link key={route.name} to={route.path}>
+                    {route.icon && route.icon}
+                    {route.name}
+                  </Link>
+                ))}
           </div>
         </aside>
         <div className="dashboard__body">

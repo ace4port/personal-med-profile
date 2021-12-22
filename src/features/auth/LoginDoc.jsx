@@ -23,10 +23,10 @@ const LogIn = () => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn)
   const [status, setStatus] = useState('idle')
 
-  const [email, setEmail] = React.useState('')
-  const [password, setPassword] = React.useState('')
+  const [email, setEmail] = React.useState('doca@example.com')
+  const [password, setPassword] = React.useState('string123')
 
-  let from = location.state?.from?.pathname || '/dashboard'
+  let from = location.state?.from?.pathname || '/doctor/dashboard'
 
   const handleSubmit = (e) => {
     e.preventDefault()

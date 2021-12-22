@@ -15,7 +15,7 @@ export const createAppointment = createAsyncThunk('patient/appointment/create', 
 })
 
 export const approveAppointment = createAsyncThunk('doctor/appointment/approve', async (formdata) => {
-  const response = await api.patient_logIn(formdata)
+  const response = await api.approveAppointment(formdata.id, formdata)
   return response.data
 })
 
@@ -42,7 +42,7 @@ export const appointmentSlice = createSlice({
       .addCase(createAppointment.fulfilled, (state, action) => {
         state.loading = false
         state.status = 'success'
-        state.appointments = [{ ...state.appointments, ...action.payload }]
+        state.appointments = [{ ...state.appointments }, action.payload]
       })
       .addCase(createAppointment.rejected, (state, action) => {
         state.loading = false
@@ -60,6 +60,11 @@ export const appointmentSlice = createSlice({
         state.status = 'success'
         state.appointments = [{ ...state.appointments, ...action.payload }]
         // state.user = action.payload
+      })
+      .addCase(approveAppointment.rejected, (state, action) => {
+        state.loading = false
+        state.status = 'failed'
+        state.error = action.error.message
       })
 
       .addCase(fetchAppointments.pending, (state) => {

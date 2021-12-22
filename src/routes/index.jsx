@@ -9,6 +9,7 @@ import { publicRoutes } from './pubRoutes'
 import { privateRoutes } from './privateRoutes'
 import Dashboard from 'pages/Dashboard'
 import Error from 'pages/Error'
+import { doctorRoutes } from './doctorRoutes'
 
 const RoutesList = () => {
   return (
@@ -36,6 +37,20 @@ const RoutesList = () => {
             return <Route key={route.name} path={route.path} element={suspenseWrap} />
           })}
         </Route>
+        <Route
+          path={'/doctor/dashboard'}
+          element={
+            <DoctorRoute>
+              <DashboardLayout />
+            </DoctorRoute>
+          }
+        >
+          <Route index element={<Dashboard />} />
+          {doctorRoutes.map((route) => {
+            const suspenseWrap = <Suspense fallback={<div>Loading ....</div>}>{route.component}</Suspense>
+            return <Route key={route.name} path={route.path} element={suspenseWrap} />
+          })}
+        </Route>
         <Route path="*" element={<Error />} />
       </Routes>
     </BrowserRouter>
@@ -49,6 +64,19 @@ const PrivateRoute = ({ children }) => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn)
   if (!isLoggedIn) {
     return <Navigate to="/login" state={{ from: location }} />
+  }
+  return children
+}
+
+const DoctorRoute = ({ children }) => {
+  const location = useLocation()
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn)
+  const isDoctor = useSelector((state) => state.auth.isDoctor)
+  if (!isLoggedIn) {
+    return <Navigate to="/login" state={{ from: location }} />
+  }
+  if (!isDoctor) {
+    return <Navigate to="/login" />
   }
   return children
 }

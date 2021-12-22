@@ -16,7 +16,6 @@ const initialState = {
 export const logIn = createAsyncThunk('patient/auth/logIn', async ({ email, password }) => {
   // check for token here ~~
   const response = await api.patient_logIn({ email, password })
-  console.log(response)
   localStorage.setItem('token', response.data.token)
   return response.data
 })
@@ -28,6 +27,7 @@ export const register = createAsyncThunk('patient/auth/register', async (formDat
 
 export const doctor_logIn = createAsyncThunk('doctor/auth/logIn', async ({ email, password }) => {
   const response = await api.doctor_logIn({ email, password })
+  localStorage.setItem('token', response.data.token)
   return response.data
 })
 
@@ -60,6 +60,7 @@ export const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(logIn.pending, (state) => {
+        state = { ...initialState }
         state.status = 'loading'
         state.loading = true
       })
@@ -75,6 +76,7 @@ export const authSlice = createSlice({
       })
 
       .addCase(register.pending, (state) => {
+        state = { ...initialState }
         state.status = 'loading'
         state.loading = true
       })
@@ -85,12 +87,22 @@ export const authSlice = createSlice({
         // state.user = action.payload
       })
 
+      .addCase(doctor_logIn.pending, (state) => {
+        state = { ...initialState }
+        state.status = 'loading'
+        state.loading = true
+      })
       .addCase(doctor_logIn.fulfilled, (state, action) => {
         state.loading = false
         state.status = 'success'
         state.isLoggedIn = true
         state.isDoctor = true
         state.user = action.payload
+      })
+      .addCase(doctor_register.pending, (state, action) => {
+        state = { ...initialState }
+        state.status = 'loading'
+        state.loading = true
       })
       .addCase(doctor_register.fulfilled, (state, action) => {
         state.loading = false

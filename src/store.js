@@ -4,7 +4,7 @@ import counterReducer from 'features/counter/counterSlice'
 import authReducer from 'features/auth/authSlice'
 import doctorsReducer from 'features/doctors/doctorSlice'
 import departmentReducer from 'features/department/departmentSlice'
-// import prescriptionReducer from 'features/prescription/prescriptionSlice'
+import prescriptionReducer from 'features/prescription/prescriptionSlice'
 import appointmentReducer from 'features/appointment/appointmentSlice'
 
 export const store = configureStore({
@@ -14,6 +14,6 @@ export const store = configureStore({
     doctors: doctorsReducer,
     department: departmentReducer,
     appointment: appointmentReducer,
-    // prescription: prescriptionReducer,
+    prescription: prescriptionReducer,
   },
 })

@@ -15,23 +15,42 @@ const Container = styled.div`
 
 const Dashboard = () => {
   const user = useSelector((state) => state.auth.user)
+  const isDoctor = useSelector((state) => state.auth.isDoctor)
 
   return (
     <div>
       <div>---------- Welcome to your Dashboard {user?.full_name} ----------------</div>
       <p>What do you want to do today?</p>
-      <Container>
-        <SimpleCard link="appointments" title="Make an appointment" />
-        <SimpleCard link="prescription" title="See prescriptions" />
-        <SimpleCard link="reports" title="View medical reports" />
-        <SimpleCard link="services" title="Services" />
-        <SimpleCard link="support" title="Support" />
-      </Container>
+      {!isDoctor ? <PatientLayout /> : <DocLayout />}
     </div>
   )
 }
 
 export default Dashboard
+
+const PatientLayout = () => {
+  return (
+    <Container>
+      <SimpleCard link="appointments" title="Make an appointment" />
+      <SimpleCard link="prescription" title="See prescriptions" />
+      <SimpleCard link="reports" title="View medical reports" />
+      <SimpleCard link="services" title="Services" />
+      <SimpleCard link="support" title="Support" />
+    </Container>
+  )
+}
+
+const DocLayout = () => {
+  return (
+    <Container>
+      <SimpleCard link="appointments" title="Approve an appointment" />
+      <SimpleCard link="prescription" title="Write prescriptions" />
+      <SimpleCard link="reports" title="Upload medical reports" />
+      <SimpleCard link="services" title="Services" />
+      <SimpleCard link="support" title="Support" />
+    </Container>
+  )
+}
 
 const Card = ({ children }) => <div className="card">{children}</div>
 const SimpleCard = ({ title, children, link }) => (

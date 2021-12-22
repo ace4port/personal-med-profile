@@ -17,7 +17,7 @@ export const patient_logIn = ({ email, password }) => axios.post(`${url}/patient
 export const patient_register = ({ full_name, email, password, contact_no, gender, date_of_birth, blood_group }) =>
   axios.post(`${url}/patients/`, { full_name, email, password, contact_no, gender, date_of_birth, blood_group })
 
-export const doctor_logIn = ({ email, password }) => axios.post(`${url}/patient-accounts/login/`, { email, password })
+export const doctor_logIn = ({ email, password }) => axios.post(`${url}/doctor-accounts/login`, { email, password })
 
 export const doctor_register = ({
   full_name,
