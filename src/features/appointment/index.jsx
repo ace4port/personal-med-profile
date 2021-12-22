@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 
-import SimpleModal from 'components/ui/Modals/SimpleModal'
+import FormModal from 'components/ui/Modals/FormModal'
 import { RoundButton } from 'components/ui/Buttons'
 import { AnimatedButton } from 'components/ui/Buttons'
+import { fireToast } from 'components/ui/Toast'
 
 const Appointment = () => {
   const [modal, setmodal] = useState(false)
@@ -11,7 +12,9 @@ const Appointment = () => {
       <div> ---------------- This is appointments page -----------------</div>
 
       <RoundButton handleClick={() => setmodal(true)}>Make an appointment</RoundButton>
-      <h6>Open form emodal to make appointment</h6>
+      <FormModal isActive={modal} closeModal={() => setmodal(false)} title="Make a new appointment">
+        <MakeAppointment isActive={modal} handleClose={() => setmodal(false)} />
+      </FormModal>
 
       <h4>Appointments on calendar -- op idea .....</h4>
       <h5>Past appointments</h5>
@@ -20,20 +23,30 @@ const Appointment = () => {
       <li>Appointment 1</li>
       <li>Appointment 4</li>
       <h6>Click on appointment for appointments details</h6>
-
-      <SimpleModal isActive={modal} closeModal={() => setmodal(false)} title="Make a new appointment">
-        <MakeAppointment isActive={modal} handleClose={() => setmodal(false)} />
-      </SimpleModal>
     </div>
   )
 }
 
 export default Appointment
 
+const departments = [
+  'Anesthesiology',
+  'Orthopedic',
+  'Dermatology',
+  'Pathalogy',
+  'Pediatrics',
+  'Radiology',
+  'ENT',
+  'Dentistry',
+  'Psychiatry',
+  'Physiotherapy',
+  'Pharmacy',
+]
+const doctors = ['Dr. A', 'Dr. B', 'Dr. C', 'Dr. D', 'Dr. E']
 const MakeAppointment = ({ isActive, handleClose }) => {
-  const [formData, setFormdata] = useState({ date: '', desc: '', doctor: '' })
-  const [status, setStatus] = useState('idle')
+  const [formData, setFormdata] = useState({ date: '', desc: '', doctor: '', department: '' })
 
+  const [status, setStatus] = useState('idle')
   useEffect(() => setStatus('idle'), [isActive])
 
   const handleChange = (e) => {
@@ -43,19 +56,38 @@ const MakeAppointment = ({ isActive, handleClose }) => {
   const handleSubmit = (e) => {
     setStatus('loading')
     e.preventDefault()
-    setTimeout(() => setStatus('success'), 2000)
+    setTimeout(() => {
+      setStatus('success')
+      fireToast('success', 'Appointment created')
+      setTimeout(() => {
+        handleClose()
+        fireToast('info', 'Check in later for confirmation')
+      }, 1000)
+    }, 2000)
   }
 
   return (
     <form onSubmit={handleSubmit}>
       <label>
         Select a department
-        <input type="text" name="desc" value={formData.desc} onChange={handleChange} />
+        <select name="department" value={formData.department} onChange={handleChange}>
+          {departments.map((department) => (
+            <option key={department} value={department}>
+              Department of {department}
+            </option>
+          ))}
+        </select>
       </label>
       <br />
 
       <label>Select a doctor</label>
-      <input type="text" name="desc" value={formData.desc} onChange={handleChange} />
+      <select name="doctor" value={formData.doctor} onChange={handleChange}>
+        {doctors.map((doctor) => (
+          <option key={doctor} value={doctor}>
+            {doctor}
+          </option>
+        ))}
+      </select>
       <br />
 
       <label>Enter date and time</label>
@@ -66,7 +98,7 @@ const MakeAppointment = ({ isActive, handleClose }) => {
       <input type="text" name="desc" value={formData.desc} onChange={handleChange} />
       <br />
 
-      <AnimatedButton type="submit" round status={status}>
+      <AnimatedButton type="submit" status={status}>
         Submit for approval
       </AnimatedButton>
       <RoundButton variant="danger" type="button" handleClick={handleClose}>

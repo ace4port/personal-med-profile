@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const url = 'https://blog2-api7991.herokuapp.com/api/v1/posts'
+const url = 'https://phr21.herokuapp.com/'
 
 // Home page
 export const fetchPosts = (page) => axios.get(`${url}?limit=5/${page ? `%2F&page=${page}` : ''}`)

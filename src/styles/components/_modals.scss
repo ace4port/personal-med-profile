@@ -71,3 +71,12 @@
   top: 0;
   background-color: rgba(0, 0, 0, 0.5);
 }
+
+.form-modal {
+  @extend .simple-modal;
+
+  input,
+  select {
+    margin: 1rem;
+  }
+}

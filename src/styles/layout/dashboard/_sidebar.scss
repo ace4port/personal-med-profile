@@ -1,17 +1,20 @@
 .dashboard {
   margin: 0 auto;
   max-width: $max-width;
-  padding: 1rem;
+  padding: 0;
 
   display: flex;
   &__aside {
     flex-basis: 250px;
   }
-  &__main {
-    min-height: 100vh;
-
-    display: flex;
-    // align-items: center;
-    justify-content: center;
+  &__body {
+    width: 100%;
+    min-height: 90vh;
+    padding: 1rem;
+    .main {
+      display: flex;
+      // align-items: center;
+      // justify-content: center;
+    }
   }
 }
