@@ -13,7 +13,7 @@ import {
 const Profile = React.lazy(() => import('features/profile'))
 
 const DoctorAppointment = React.lazy(() => import('features/appointment/doctor'))
-const DoctorPrescription = React.lazy(() => import('features/prescription'))
+const DoctorPrescription = React.lazy(() => import('features/prescription/doctor'))
 const DoctorReports = React.lazy(() => import('features/reports'))
 
 const Support = React.lazy(() => import('features/support'))
@@ -36,7 +36,7 @@ export const doctorRoutes = [
   {
     name: 'Prescription',
     icon: <RiCapsuleFill />,
-    path: 'prescription',
+    path: 'prescription/*',
     component: <DoctorPrescription />,
   },
   {

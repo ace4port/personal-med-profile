@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { AnimatedButton } from 'components/ui/Buttons'
 import { fireToast } from 'components/ui/Toast'
-import { logIn, logInLocal } from './authSlice'
+import { logIn } from './authSlice'
 
 export const Input = styled.input`
   border: none;
@@ -23,7 +23,7 @@ const LogIn = () => {
 
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn)
 
-  useEffect(() => dispatch(logInLocal()), [dispatch])
+  // useEffect(() => dispatch(logInLocal()), [dispatch])
 
   if (isLoggedIn) {
     fireToast('success', 'Logged in successfully')

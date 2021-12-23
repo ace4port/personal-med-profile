@@ -6,6 +6,7 @@ const initialState = {
   status: 'idle',
   isDoctor: false,
   prescriptions: [],
+  appointments: [],
   medicines: [],
   error: null,
 }
@@ -30,9 +31,14 @@ export const fetchLatest = createAsyncThunk('patient/prescription/latest/', asyn
   return response.data
 })
 
-export const appointmentSlice = createSlice({
-  name: 'appointment',
+export const prescriptionSlice = createSlice({
+  name: 'prescription',
   initialState,
+  reducers: {
+    storewithPresc: (state, action) => {
+      state.appointments = action.payload
+    },
+  },
   // The `reducers` field lets us define reducers and generate associated actions
   extraReducers: (builder) => {
     builder
@@ -43,7 +49,7 @@ export const appointmentSlice = createSlice({
       .addCase(fetchPrecriptions.fulfilled, (state, action) => {
         state.loading = false
         state.status = 'success'
-        state.appointments = [{ ...state.appointments, ...action.payload }]
+        state.prescriptions = [...action.payload]
       })
       .addCase(fetchPrecriptions.rejected, (state, action) => {
         state.loading = false
@@ -92,6 +98,7 @@ export const appointmentSlice = createSlice({
 })
 
 // export const { increment, decrement, incrementByAmount } = authSlice.actions
+export const { storewithPresc } = prescriptionSlice.actions
 export const appointments = (state) => state.appointment.appointments
 
-export default appointmentSlice.reducer
+export default prescriptionSlice.reducer

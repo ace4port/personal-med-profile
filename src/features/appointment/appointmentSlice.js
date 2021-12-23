@@ -58,7 +58,7 @@ export const appointmentSlice = createSlice({
       .addCase(approveAppointment.fulfilled, (state, action) => {
         state.loading = false
         state.status = 'success'
-        state.appointments = [{ ...state.appointments, ...action.payload }]
+        state.appointments = [{ ...state.appointments }, ...action.payload]
         // state.user = action.payload
       })
       .addCase(approveAppointment.rejected, (state, action) => {

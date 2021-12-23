@@ -17,7 +17,8 @@ export const logIn = createAsyncThunk('patient/auth/logIn', async ({ email, pass
   // check for token here ~~
   const response = await api.patient_logIn({ email, password })
   localStorage.setItem('token', response.data.token)
-  return response.data
+  const user = await api.fetchUser()
+  return user.data
 })
 
 export const register = createAsyncThunk('patient/auth/register', async (formData) => {
@@ -28,7 +29,8 @@ export const register = createAsyncThunk('patient/auth/register', async (formDat
 export const doctor_logIn = createAsyncThunk('doctor/auth/logIn', async ({ email, password }) => {
   const response = await api.doctor_logIn({ email, password })
   localStorage.setItem('token', response.data.token)
-  return response.data
+  const user = await api.fetchUser()
+  return user.data
 })
 
 export const doctor_register = createAsyncThunk('doctor/auth/register', async (formData) => {
